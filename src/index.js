@@ -16,11 +16,19 @@
 
         console.log(`Nueva conexión aceptada del cliente ${socket.id}.`);
 
-        socket.emit('ping');
+        // Each second sends a update-time event to the client.
+        setInterval(() => {
+            // get new time
+            const time = new Date();
 
-        socket.on('pong', () => {
-            console.log('pong recibido del cliente.');
-        });
+            // get h,m,s
+            const hours = time.getHours();
+            const mins = time.getMinutes();
+            const secs = time.getSeconds();
+
+            socket.emit('server:update-time', { hours, mins, secs });
+
+        }, 1000);
 
     });
 
